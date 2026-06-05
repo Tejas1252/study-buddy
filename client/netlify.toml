@@ -1,0 +1,15 @@
+# Netlify build config for the Study Buddy frontend.
+# In Netlify: set "Base directory" to `client` (or keep repo root and rely on base below).
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "build"
+
+# Single-page app: route everything to index.html so client-side rendering works.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Remember to set REACT_APP_API_BASE_URL in Netlify's environment variables,
+# e.g. https://your-backend.onrender.com/api

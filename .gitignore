@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment / secrets — never commit real keys
+.env
+*/.env
+.env.local
+*/.env.local
+!*/.env.example
+
+# Build output
+client/build/
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
