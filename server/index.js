@@ -14,9 +14,11 @@ const app = express();
 // CORS: if ALLOWED_ORIGIN is set (comma-separated), restrict to those origins;
 // otherwise allow all (convenient for local dev). Set it in production to the
 // Netlify site URL.
+// Compare origins ignoring trailing slashes (a common mismatch source).
+const stripSlash = (s) => String(s || "").trim().replace(/\/+$/, "");
 const allowedOrigins = String(process.env.ALLOWED_ORIGIN || "")
   .split(",")
-  .map((o) => o.trim())
+  .map(stripSlash)
   .filter(Boolean);
 
 app.use(
@@ -25,8 +27,10 @@ app.use(
       ? {
           origin: (origin, cb) => {
             // Allow same-origin / non-browser requests (no Origin header).
-            if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-            return cb(new Error("Not allowed by CORS"));
+            if (!origin || allowedOrigins.includes(stripSlash(origin))) {
+              return cb(null, true);
+            }
+            return cb(new Error(`Origin ${origin} not allowed by CORS`));
           },
         }
       : undefined
